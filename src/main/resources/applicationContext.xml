@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!-- 加载jdbc配置文件 -->
+    <context:property-placeholder location="classpath:db.properties" file-encoding="UTF-8" ignore-unresolvable="true"/>
+    <!-- hibernate 管理
+    若用了注解的开发方式，我们的核心配置文件就需要我修改了，这里就需要Hibernate的AnnotationSessionFactoryBean工厂类
+    -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <!-- 引用上面设置的数据源 -->
+        <property name="dataSource" ref="dataSource" />
+        <!-- 包扫描的方式加载注解类 -->
+        <property name="packagesToScan">
+            <list>
+                <value>POJO</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <prop key="hibernate.autoReconnect">true</prop>
+                <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <!-- 解决session关闭问题 -->
+                <!--<prop key="hibernate.enable_lazy_load_no_trans">true</prop>-->
+                <!--<prop key="current_session_context_class">thread</prop>-->
+                <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+                <!--<prop key="hibernate.cache.provider_class">org.hibernate.cache.internal.HashtableCacheProvider</prop>-->
+                <!--<prop key="hibernate.max_fetch_depth">3</prop>-->
+                <!--<prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/basedata?serverTimezone=UTC</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>-->
+            </props>
+        </property>
+    </bean>
+
+    <!-- data connection setting -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="${database.driverClassName}"></property>
+        <property name="jdbcUrl" value="${database.url}"></property>
+        <property name="user" value="${database.username}"></property>
+        <property name="password" value="${database.password}"></property>
+        <!-- 设置数据库连接池的最大连接数 -->
+        <property name="maxPoolSize">
+            <value>50</value>
+        </property>
+        <!-- 设置数据库连接池的最小连接数 -->
+        <property name="minPoolSize">
+            <value>5</value>
+        </property>
+        <!-- 设置数据库连接池的初始化连接数 -->
+        <property name="initialPoolSize">
+            <value>5</value>
+        </property>
+        <!-- 设置数据库连接池的连接最大空闲时间 -->
+        <property name="maxIdleTime">
+            <value>20</value>
+        </property>
+        <!-- c3p0缓存Statement的数量数 -->
+        <property name="maxStatements">
+            <value>50</value>
+        </property>
+        <!-- 当连接池里面的连接用完的时候,C3P0一下获取新的连接数 -->
+        <property name="acquireIncrement">
+            <value>20</value>
+        </property>
+
+    </bean>
+
+    <!-- 配置Hibernate事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    <!-- 配置事务异常封装 -->
+    <bean id="persistenceExceptionTranslationPostProcessor"
+          class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+    <!-- 基于数据源的事务管理器 -->
+    <!-- <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+        p:dataSource-ref="dataSource" /> -->
+
+    <!--<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>-->
+    <!-- 使用注解事务：
+        使用了sessionFactory.getCurrentSession()获取session时，需要事务的支持；
+        两种方式：这段代码所在的方法要么被事务切面切中，要么方法上面用了注解事务。
+    -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!-- 使用annotation -->
+    <context:annotation-config/>
+    <!-- 使用annotation自动注册bean,并检查@Controller, @Service, @Repository注解已被注入 -->
+    <context:component-scan base-package="action"/>
+    <context:component-scan base-package="service"/>
+    <context:component-scan base-package="dao" />
+    <!--<context:component-scan base-package="config" />-->
+    <context:component-scan base-package="domain" />
+    <context:component-scan base-package="utils" />
+</beans>

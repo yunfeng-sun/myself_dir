@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 解决表单提交乱码-->
+    <constant name="struts.i18n.encoding" value="UTF-8"/>
+     <!--让struts2支持动态方法调用 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开-->
+    <constant name="struts.action.extension" value="action,do,htm"/>
+    <!-- 是否使用struts的开发模式。开发模式会有更多的调试信息。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.devMode" value="true"/>
+
+    <package name="validate" namespace="/validate" extends="struts-default">
+        <action name="Demo1Action_add" class="action.validate.Demo1Action" method="add">
+            <result name="find" type="dispatcher">/index.jsp</result>
+            <result name="success" type="dispatcher">/common/success.jsp</result>
+            <result name="input" type="dispatcher">/validate/index.jsp</result>
+        </action>
+    </package>
+</struts>

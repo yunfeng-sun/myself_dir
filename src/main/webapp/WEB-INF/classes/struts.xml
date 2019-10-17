@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 是否自动加载国际化资源文件 -->
+    <!--<constant name="struts.i18n.reload" value="true"/>-->
+    <!-- 默认false 设置是否是以自动装配策略创建对象 -->
+    <!--<constant name="struts.objectFactory.spring.autoWire.alwaysRespect" value="true"/>-->
+     <!--让struts2支持动态方法调用 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="true"/>
+    <!-- 让struts2 拦截器不会拦截特定的页面所发出的请求 -->
+    <!-- 指定被struts2处理的请求后缀类型。多个用逗号隔开-->
+    <constant name="struts.action.extension" value="action,do,htm"/>
+    <!-- struts2默认临时文件存储位置 -->
+    <!--<constant name="struts.multipart.saveDir" value="/tmp"/>-->
+    <!-- 这里的name 一定要写出POJO 因为前面的 struts.convention.default.parent.package 已经设置成了pojo =-->
+    <!--<package name="POJO" extends="struts-default">-->
+
+    <!--</package>-->
+    <!-- 是否使用struts的开发模式。开发模式会有更多的调试信息。默认值为false(生产环境下使用),开发阶段最好打开  -->
+    <constant name="struts.devMode" value="true"/>
+    <!-- 指定由spring负责action对象的创建  -->
+    <!--<constant name="struts.objectFactory" value="spring"/>-->
+    <package name="syf1" namespace="/" extends="struts-default">
+        <action name="user_login" class="action.UserAction" method="login">
+            <result name="success" type="dispatcher">/common/success.jsp</result>
+            <result name="input" type="dispatcher">/index.jsp</result>
+            <result name="error" type="dispatcher">/common/error.jsp</result>
+        </action>
+        <action name="model" class="action.ModelAction" method="send">
+            <!-- 动态获得跳转的位置 redirect 不保留request中的参数，chain可以
+            /topicAction!findTopics.do?topicId=${topicId}
+            -->
+            <!--<result name="success" type="redirectAction">${url}</result>-->
+            <result name="success" type="chain">${url}</result>
+        </action>
+        <!--<action name="model_inline" class="action.ModelInlineAction" method="send">-->
+            <!--&lt;!&ndash; 动态获得跳转的位置 &ndash;&gt;-->
+            <!--<result type="redirect">${url}</result>-->
+        <!--</action>-->
+    </package>
+    <package name="syf2" namespace="/testMethod" extends="struts-default">
+        <action name="userInfo" class="action.UserInfoAction" method="register">
+            <result name="success" type="dispatcher">/common/success.jsp</result>
+            <result name="error" type="dispatcher">/common/error.jsp</result>
+        </action>
+    </package>
+
+    <include file="struts-validate.xml"/>
+</struts>

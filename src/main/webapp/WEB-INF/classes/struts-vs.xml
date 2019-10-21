@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <package name="valueStacks" namespace="/valueStacks" extends="struts-default">
+        <interceptors>
+            <interceptor name="vs" class="ognl.vs.VSInterceptor"></interceptor>
+        </interceptors>
+        <action name="Demo1Action" class="ognl.valueStacks.Demo1Action" >
+            <result name="success" type="dispatcher">/common/success.jsp</result>
+            <interceptor-ref name="vs"></interceptor-ref>
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        </action>
+        <action name="Demo2Action" class="ognl.action.Demo2Action" >
+            <result name="success" type="dispatcher">/index.jsp</result>
+        </action>
+    </package>
+</struts>

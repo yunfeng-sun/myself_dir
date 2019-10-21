@@ -30,7 +30,7 @@ public class UserDaoImpl implements UserDao {
         Query query = sessionFactory.getCurrentSession().createQuery(hsql);
         query.setString(0, user.getUsername());
         query.setString(1, user.getPassword());
-        System.out.println(user.getUsername());
+//        System.out.println(user.getUsername());
         it=query.iterate();
         if(it.hasNext()) {
             System.out.println("true");

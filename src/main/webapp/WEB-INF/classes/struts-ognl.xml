@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <package name="ognl" namespace="/ognl" extends="struts-default">
+        <action name="Demo1Action" class="ognl.downloadStram.Demo1Action" >
+            <!--<result name="success" type="dispatcher">/index.jsp</result>-->
+            <result name="success" type="stream">
+                <!-- 告诉web文件类型 tomcat/conf/web.xml中有;  -->
+                <param name="contentType">application/zip</param>
+                <!-- 提供流的名字  -->
+                <param name="inputName">is</param>
+                <!--
+                  响应头中只能使用 latin(ISO-8859-1)码表
+                    下面配置最终会作为响应头
+                 使用URL Encode编码，对中文进行编码才能发送 => %E6%F7
+                 todo 在struts配置文件中 可以使用ognl表达式 ==< 格式： ${} 在括号内使用ognl（虽然与el很像，但为ognl）  注意区分大小写
+                        下面为从根获取，根在值栈中，即从action中获取该名称的值
+                  -->
+                <param name="contentDisposition">attachment;filename="${fileName}"</param>
+                <!-- 缓冲区  -->
+                <param name="bufferSize">10240</param>
+            </result>
+        </action>
+        <action name="Demo2Action" class="ognl.downloadStram.Demo2Action" >
+            <result name="success" type="dispatcher">/ognl/demo1.jsp</result>
+        </action>
+        <action name="Demo3Action" class="ognl.downloadStram.Demo3Action" >
+            <result name="success" type="dispatcher">/ognl/demo2.jsp</result>
+        </action>
+    </package>
+</struts>

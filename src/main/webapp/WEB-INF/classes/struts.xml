@@ -23,6 +23,11 @@
     <!-- 指定由spring负责action对象的创建  -->
     <!--<constant name="struts.objectFactory" value="spring"/>-->
     <package name="syf1" namespace="/" extends="struts-default">
+        <!-- todo 全局错误配置 -->
+        <global-exception-mappings>
+            <!-- 如果出现 java.lang.RuntimeException的异常， 那么转发到error页面 -->
+            <exception-mapping exception="java.lang.RuntimeException" result="error"></exception-mapping>
+        </global-exception-mappings>
         <action name="user_login" class="action.UserAction" method="login">
             <result name="success" type="dispatcher">/common/success.jsp</result>
             <result name="input" type="dispatcher">/index.jsp</result>
@@ -51,4 +56,5 @@
     <include file="struts-vs.xml"/>
     <include file="struts-ognl.xml"/>
     <include file="struts-tag.xml"/>
+    <include file="struts-fileupload.xml"/>
 </struts>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <!-- 指定文件上传时临时文件所在目录 打断点才能看见，用完就删除了,即上传文件不保存！ -->
+    <constant name="struts.multipart.saveDir" value="D:/tmp"></constant>
+    <!-- 文件上传大小设置 （是所有文件的大小！！！） -->
+    <constant name="struts.multipart.maxSize" value="12097152"></constant>
+    <package name="upload" namespace="/upload" extends="struts-default">
+        <interceptors>
+            <interceptor-stack name="aa">
+                <interceptor-ref name="fileUpload">  <!--  todo 参数为 FileUploadInterceptor 的方法 值为方法传入的参数-->
+                    <param name="maximumSize" >2097152</param> <!-- 优先级 更高 -->
+                    <param name="allowedExtensions" >jpg,image,bmp.jpeg</param> <!-- 允许上传文件的类型 -->
+                    <param name="allowedTypes" >image/pjpeg</param> <!-- 若把zip改为jpg的上面限制不了，这里限制Map的类型(根本的) -->
+                </interceptor-ref>
+            </interceptor-stack>
+        </interceptors>
+        <action name="Demo1Action" class="cn.syf.fileupload.Demo1Action" >
+            <result name="success" type="dispatcher">/upload/demo1.jsp</result>
+            <result name="input" type="dispatcher">/upload/demo1.jsp</result>
+            <result name="error" type="dispatcher">/upload/demo1.jsp</result>
+        </action>
+        <action name="Demo2Action" class="cn.syf.fileupload.Demo2Action" >
+            <result name="success" type="dispatcher">/upload/demo2.jsp</result>
+            <result name="input" type="dispatcher">/upload/demo2.jsp</result>
+            <result name="error" type="dispatcher">/upload/demo2.jsp</result>
+        </action>
+    </package>
+</struts>

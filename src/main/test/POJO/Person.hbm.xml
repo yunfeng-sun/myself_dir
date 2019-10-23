@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="POJO">
+    <!--
+        class 配置对象与表的关系
+            name 默认情况 确定对象 全限类名
+                在<hibernate-mapping> 配置package 确定在哪个包，则可以只写简单类名
+            table 数据库的表名
+            catalog 数据库的名称 默认值为hibernate.cfg.xml中配置的url，配置则可不写
+        id 配置主键  要求每个表都存在主键
+            name 确定javaBean中哪个属性作为主键
+                generator class="native" 主键生成策略，固定选择他
+        property 配置javaBean中普通属性
+            name 确定属性名称
+            type 确定属性的类型
+                java类型 type="java.lang.String"
+                hibernate类型
+                    type="string"
+                    timestamp :时间戳，数据更改，当前字段内容将自动使用系统使用
+                    time :时间
+                    date 日期
+                    binary 二进制 ==> 对应就是大数据类型
+                数据库类型  需要使用子标签 column(列名默认与property一致，可不写)  sql-type="sql-type"
+           length 确定列的大小
+           not-null="true"  不为空
+           unique="true" 唯一
+    -->
+    <class name="Person" table="t_person">
+        <id name="pId">
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(50)"/>
+        </property>
+        <property name="age" type="integer"/>
+        <property name="birthday" type="timestamp"/>
+        <!-- 查看需要传的文件/图片 大小 单位byte  -->
+        <property name="photo" type="binary" length="279100000"/>
+        <property name="desc" type="string" column="`desc`"/>
+    </class>
+</hibernate-mapping>

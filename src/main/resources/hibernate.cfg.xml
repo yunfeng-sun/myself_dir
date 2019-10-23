@@ -4,17 +4,46 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/basedata</property>
+        <!-- 基本配置
+            property 的name 若以 hibernate开头，则可以省略 hibernate ；两者一致，没区别。
+        -->
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/basedata?serverTimezone=UTC</property>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <!-- 指定数据库方言  ==>就是对流行的不同数据库有不同的支持！！！
+        <property name="connection.username">root</property>
+        <property name="connection.password">123456</property>
+        <!-- 指定数据库方言  ==>就是对流行的不同数据库有不同的支持！！！  方言来确定生成什么样的规范的sql语句
         MySQL5Dialect配合update可以自动建表与追加
         MySQL5InoDBDialect 则不能通过hibernate在数据库中创建表-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <!-- 是否显示sql语句 -->
         <property name="show_sql">true</property>
-        <!-- DB schema will be updated if needed -->
-         <!--<property name="hbm2ddl.auto">update</property>-->
+        <!--  是否格式化，不格式显示一样-->
+        <property name="hibernate.format_sql">true</property>
+        <!-- 是否显示注释， 用于提示 当前sql语句操作的对象 -->
+        <property name="hibernate.use_sql_comments">true</property>
+
+        <!-- DB schema will be updated if needed 如何创建表
+        create 每次加载 cfg.xml文件，都将创建表 ，程序关闭时（factory.close），表不进行删除
+            用于初始化，用于测试场景多  如果表存在，则先删除，后创建；
+        create-drop 每次加载 cfg.xml文件，都将创建表 ，程序关闭时（factory.close），表进行删除
+        update 如果表不存在，则创建；如果表已经存在，检查映射文件是否与表一致，如果不一致则更新表结构
+            只添加，不删除
+        validate 如果加载 cfg.xml文件，则校验 映射文件和数据是否匹配，如果匹配正常操作，如果不匹配抛异常
+        ####todo 现实开发中，先有表再有映射文件
+
+        先create创建 再改为update
+        -->
+        <!--<property name="hbm2ddl.auto">create</property>-->
+        <property name="hbm2ddl.auto">update</property>
+        <!--  配置映射文件
+        <mapping resource="POJO/User.hbm.xml"/>
+        -->
+        <!-- 取消bean校验  -->
+        <!--<property name="javax.persistence.volidation.mode">none</property>-->
+
         <mapping class="POJO.Test1Entity"/>
         <mapping class="POJO.UserEntity"/>
         <mapping class="POJO.ConfigEntity"/>
+        <mapping class="POJO.TabUserEntity"/>
     </session-factory>
 </hibernate-configuration>

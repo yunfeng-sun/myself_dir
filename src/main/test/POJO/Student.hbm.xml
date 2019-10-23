@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="POJO">
+    <class name="Student" table="t_student">
+        <id name="sId">
+            <!--  主键生成策略：
+             #整型 int/long/short
+             1 increment hibernate 自动维护表中的主键，先进行查询 max(id) ,然后最大值 +1 ，执行insert 语句
+                    因此 存在并发问题，不建议使用
+                    <generator class="increment"/>
+             2 identity 将采用数据库底层的自动增长  SQLException: Field 'sId' doesn't have a default value     我使用的数据库非空....
+             3 sequence hibernate采用数据库底层的序列 例如:oracle
+                    oracle 不支持自动增长 ， 但支持  序列
+             4 hilo hibernate将采用高低位算法 (high/low) 适用于不支持自动增长和序列的数据库   了解即可
+                    采用第三张表
+                        <param name="table"></param>  第三张表的表名
+                        <param name="column"></param> 第三张表的 列
+                        <param name="max_lo">100</param> 一次操作支持的最大并发数   一次执行(必然操作100次才结束) 例如: 起始id为1 ，一次操作2个，则id为 2,3 ; 再一次执行2个，id为103  104
+
+            5 native  根据数据库底层从 identity  sequence   hilo  选择一个
+            6 UUID 类型必须字符串
+            ####### 以上 hibernate 会自动生成
+            7  assigned 自然生成，程序自己设置  这里在 student对象中赋予id值，否则报错
+             -->
+            <generator class="native"/>
+        </id>
+        <property name="name">
+            <column name="name" sql-type="varchar(50)"/>
+        </property>
+    </class>
+</hibernate-mapping>

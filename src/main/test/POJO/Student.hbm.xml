@@ -29,5 +29,18 @@
         <property name="name">
             <column name="name" sql-type="varchar(50)"/>
         </property>
+        <!--<set name="name" cascade="save-update"> -->
+            <!--  主键得先删除关联 表得数据 才能删除；   外键 关联得必须存在。
+            save-update 只需要执行一方的持久状态save（） ，关联的多方不需要手动执行，会自动执行
+            delete 会先解除级联关系 （多方的外键值 更新为 null），再删除       （删除A时，会级联删除B 满门抄斩）
+            delete-orphan   孤儿删除(弃车保帅)   指定得多方id 解除关系 ； 再删除多方指定得id     获得主键指定id得一方，得到该一方对应得多方集合； 获得指定id(已知儿子)得多方对象，从集合中remove；
+            all 包括 save-update / delete
+            all-delete-orphan 上面三种级联组合
+            none 没有操作
+         Cascade属性（级联）只设置“一”的一方即可，外键由“多”的一方进行维护，
+        在实际开发场景中，删除员工老板不会被删除，老板被删除了员工肯定要删除  -->
+            <!--<key column="student_id"></key>-->
+            <!--<one-to-many class="Person"></one-to-many>-->
+        <!--</set>-->
     </class>
 </hibernate-mapping>

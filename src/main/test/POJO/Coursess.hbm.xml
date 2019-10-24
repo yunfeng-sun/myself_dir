@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <!-- hibernate 映射文件 该xml的约束为 引用的dtd格式约束 -->
+    <class name="POJO.Coursess" table="t_course">
+        <id name="cid">
+            <generator class="native"/>
+        </id>
+        <property name="content"/>
+        <property name="teacher"/>
+        <!--  多对多
+ 容器 中间表 当前表外键 另一个主表外键
+ -->
+        <set name="studentssses" table="s_student_course" cascade="delete">
+            <key column="course_id"/>
+            <many-to-many class="POJO.Studentsss" column="student_id"/>
+        </set>
+    </class>
+</hibernate-mapping>

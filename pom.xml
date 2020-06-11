@@ -15,7 +15,7 @@
         <log4j.version>2.0-beta9</log4j.version>
         <spring.version>4.1.2.RELEASE</spring.version>
         <slf4j.version>1.7.5</slf4j.version>
-        <commons-beanutils.version>1.8.3</commons-beanutils.version>
+        <commons-beanutils.version>1.9.2</commons-beanutils.version>
         <alibaba.fastjson.version>1.1.37</alibaba.fastjson.version>
         <c3p0.version>0.9.1.2</c3p0.version>
         <aspectj.aspectjweaver.version>1.7.4</aspectj.aspectjweaver.version>
